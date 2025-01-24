@@ -29,11 +29,11 @@ public class MunitionPlayer : MonoBehaviour
         return false;
     }
 
-    public void ReloadMunition(int weaponIndex)
+    public void ReloadMunition(int weaponIndex, int amount)
     {
         if (weaponIndex >= 0 && weaponIndex < maxMunitions.Length)
         {
-            currentMunitions[weaponIndex] = maxMunitions[weaponIndex];
+            currentMunitions[weaponIndex] = Mathf.Min(currentMunitions[weaponIndex] + amount, maxMunitions[weaponIndex]);
             hudPlayer.UpdateMunitionText(currentMunitions[weaponIndex]);
         }
     }
@@ -56,4 +56,3 @@ public class MunitionPlayer : MonoBehaviour
         return 0;
     }
 }
-
