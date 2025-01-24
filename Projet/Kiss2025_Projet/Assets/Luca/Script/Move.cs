@@ -1,28 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Move : MonoBehaviour{
-    [SerializeField] public float speed = 20.0f;
+    private NavMeshAgent navMeshAgent;
+    private Vector3 movementDirection;
+
+    void Awake(){
+        navMeshAgent = GetComponent<NavMeshAgent>();
+    }
 
     void Update(){
+        if (navMeshAgent == null) return;
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+        movementDirection = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        if (movementDirection != Vector3.zero){
+            navMeshAgent.SetDestination(transform.position + movementDirection);
+        }
 
         if (Input.GetKey(KeyCode.Z)){
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            movementDirection = Vector3.forward;
+            navMeshAgent.SetDestination(transform.position + Vector3.forward);
         }
         if (Input.GetKey(KeyCode.S)){
-            transform.Translate(Vector3.back * speed * Time.deltaTime);
+            movementDirection = Vector3.back;
+            navMeshAgent.SetDestination(transform.position + Vector3.back);
         }
         if (Input.GetKey(KeyCode.Q)){
-            transform.Translate(Vector3.left * speed * Time.deltaTime);
+            movementDirection = Vector3.left;
+            navMeshAgent.SetDestination(transform.position + Vector3.left);
         }
         if (Input.GetKey(KeyCode.D)){
-            transform.Translate(Vector3.right * speed * Time.deltaTime);
+            movementDirection = Vector3.right;
+            navMeshAgent.SetDestination(transform.position + Vector3.right);
         }
+    }
+
+    public Vector3 GetMovementDirection(){
+        return movementDirection;
     }
 }
