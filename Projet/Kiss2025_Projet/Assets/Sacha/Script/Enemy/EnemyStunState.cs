@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
-public class EnemyDeathState : EnemyBaseState
+public class EnemyStunState : EnemyBaseState
 {
-    
-    public override void EnterState(EnemyStateManager enemyState, Transform playerTransform, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform)
+    public NavMeshAgent agent;
+    public override void EnterState(EnemyStateManager enemyState, Transform playerTransformv, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform)
     {
+        agent = navMeshAgent;
+        agent.isStopped = true;
     }
 
     public override void UpdateState(EnemyStateManager enemyState, Vector3 playerPosition, Vector3 enemyPosition)
     {
+        
     }
 
     public override void OnCollision(EnemyStateManager enemyState)

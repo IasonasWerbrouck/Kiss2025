@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class EnemyMovementState : EnemyBaseState
 {
     public NavMeshAgent agent;
-    private float detectionArea = 5;
-    public override void EnterState(EnemyStateManager enemyState, Transform playerTransformv, NavMeshAgent navMeshAgent)
+    
+    public override void EnterState(EnemyStateManager enemyState, Transform playerTransformv, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform)
     {
         agent = navMeshAgent;
     }
@@ -22,7 +22,7 @@ public class EnemyMovementState : EnemyBaseState
         Ray PlayerRay = new Ray(enemyPosition, directionToPlayer);
         agent.isStopped = false;
         
-        if (Physics.Raycast(PlayerRay, out hit, detectionArea))
+        if (Physics.Raycast(PlayerRay, out hit, EnemyStateManager.detectionAreaMovement))
         {
             if (hit.collider.CompareTag("Player"))
             {
@@ -31,7 +31,7 @@ public class EnemyMovementState : EnemyBaseState
             }
         }
         
-        Debug.DrawRay(enemyPosition, directionToPlayer * detectionArea, Color.yellow);
+        Debug.DrawRay(enemyPosition, directionToPlayer * EnemyStateManager.detectionAreaMovement, Color.yellow);
     }
     
     public override void OnCollision(EnemyStateManager enemyState)
@@ -39,6 +39,10 @@ public class EnemyMovementState : EnemyBaseState
     }
 
     public override void ExitState(EnemyStateManager enemyState)
+    {
+        agent.isStopped = true;
+    }
+    public override void StunState(EnemyStateManager enemyState)
     {
     }
 }
