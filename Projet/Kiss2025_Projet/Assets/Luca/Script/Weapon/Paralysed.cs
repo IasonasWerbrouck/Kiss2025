@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sardinnne : MonoBehaviour
+public class Paralysed : MonoBehaviour
 {
     [SerializeField]
     public float TimeLife;
@@ -17,11 +17,7 @@ public class Sardinnne : MonoBehaviour
     {
         if (other.CompareTag("Ennemy"))
         {
-            LifeGestion lifeGestion = other.GetComponent<LifeGestion>();
-            if (lifeGestion != null)
-            {
-                lifeGestion.TakeDamage(damage);
-            }
+            print("Paralysed");
         }
     }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
-    [SerializeField]   public float damage, TimeBeforeBOOM, speed = 10f, height = 5f;
-
+    [SerializeField] public float damage, TimeBeforeBOOM, speed = 10f, height = 5f;
     public void Boom(){
         StartCoroutine(ExplodeAfterDelay());
     }

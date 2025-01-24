@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sardinnne : MonoBehaviour
+public class Tourelle_Projectille : MonoBehaviour
 {
     [SerializeField]
     public float TimeLife;
     public float damage;
     public float speed;
+
     void Start()
     {
         Destroy(gameObject, TimeLife);

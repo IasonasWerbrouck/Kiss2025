@@ -3,75 +3,91 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
-
-public class AttackPlayer : MonoBehaviour
-{
-    public GameObject[] weaponPrefabs; // Tableau des prefabs d'armes
+public class AttackPlayer : MonoBehaviour{
+    public GameObject[] weaponPrefabs;
     private Move moveScript;
+    private HUD_Player hudPlayer;
+    private MunitionPlayer munitionPlayer;
     private int currentAttackIndex = 0;
 
     void Start()
     {
         moveScript = GetComponent<Move>();
-        ChangeWeapon(0); // Initialiser avec la première arme du tableau
+        hudPlayer = FindObjectOfType<HUD_Player>();
+        munitionPlayer = GetComponent<MunitionPlayer>();
+        ChangeWeapon(0);
+        UpdateMunitionHUD();
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
+    void Update(){
+        if (Input.GetMouseButtonDown(0)){
             PerformAttack();
         }
         SwitchWeapon();
     }
 
-    void SwitchWeapon()
-    {
+    void SwitchWeapon(){
         if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeWeapon(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeWeapon(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeWeapon(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) ChangeWeapon(3);
         if (Input.GetKeyDown(KeyCode.Alpha5)) ChangeWeapon(4);
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0)
-        {
-            if (scroll > 0)
-            {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");if (scroll != 0){
+            if (scroll > 0){
                 currentAttackIndex = (currentAttackIndex + 1) % weaponPrefabs.Length;
-            }
-            else
-            {
+            }else{
                 currentAttackIndex = (currentAttackIndex - 1 + weaponPrefabs.Length) % weaponPrefabs.Length;
             }
+            hudPlayer.UpdateWeapon(currentAttackIndex);
+            UpdateMunitionHUD();
         }
     }
-    void ChangeWeapon(int index)
-    {
-        if (index >= 0 && index < weaponPrefabs.Length)
-        {
+
+    void ChangeWeapon(int index){
+        if (index >= 0 && index < weaponPrefabs.Length){
             currentAttackIndex = index;
+            hudPlayer.UpdateWeapon(currentAttackIndex);
+            UpdateMunitionHUD();
         }
+    }
+    void UpdateMunitionHUD()
+    {
+        int currentMunition = munitionPlayer.GetCurrentMunition(currentAttackIndex);
+        hudPlayer.UpdateMunitionText(currentMunition);
     }
 
     void PerformAttack()
     {
-        Debug.Log("Attaque de " + weaponPrefabs[currentAttackIndex].name);
-        if (weaponPrefabs[currentAttackIndex].name == "Sardinnne")
+        if (weaponPrefabs[currentAttackIndex].name == "Sword" || munitionPlayer.UseMunition(currentAttackIndex))
         {
-            ThrowSardinne();
+            Debug.Log("Attaque de " + weaponPrefabs[currentAttackIndex].name);
+            if (weaponPrefabs[currentAttackIndex].name == "Sardinnne")
+            {
+                ThrowSardinne();
+            }
+            if (weaponPrefabs[currentAttackIndex].name == "Grenade")
+            {
+                ThrowGrenade();
+            }
+            if (weaponPrefabs[currentAttackIndex].name == "Sword")
+            {
+                SwordAttack();
+            }
+            if (weaponPrefabs[currentAttackIndex].name == "Paralysed")
+            {
+                ThrowParalysed();
+            }
+            if (weaponPrefabs[currentAttackIndex].name == "Tourelle")
+            {
+                DropTourelle();
+            }
+            UpdateMunitionHUD();
         }
-        if (weaponPrefabs[currentAttackIndex].name == "Grenade")
+        else
         {
-            ThrowGrenade();
+            Debug.Log("Pas de munitions pour " + weaponPrefabs[currentAttackIndex].name);
         }
-        if (weaponPrefabs[currentAttackIndex].name == "Sword")
-        {
-            SwordAttack();
-        }
-
-
-        // Ajoutez ici la logique pour d'autres armes si nécessaire
     }
 
     //ATTAQUE DU LANCER DE POISSON, Dague//
@@ -144,17 +160,19 @@ public class AttackPlayer : MonoBehaviour
     }
 
     //ATTAQUE DE L'EPEE//
-    public void SwordAttack(){
+    public void SwordAttack()
+    {
         float portee = 5.0f;
 
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit)){
+        if (Physics.Raycast(ray, out hit))
+        {
             Vector3 targetPosition = hit.point;
             Vector3 direction = (targetPosition - transform.position).normalized;
-            Vector3 spawnPosition = transform.position + direction * portee; 
+            Vector3 spawnPosition = transform.position + direction * portee;
             spawnPosition.y = transform.position.y;
             GameObject sword = Instantiate(weaponPrefabs[currentAttackIndex], spawnPosition, Quaternion.identity);
             Sword swordComponent = sword.GetComponent<Sword>();
@@ -164,7 +182,8 @@ public class AttackPlayer : MonoBehaviour
         }
     }
 
-    private IEnumerator SwordSwing(GameObject sword, Vector3 direction){
+    private IEnumerator SwordSwing(GameObject sword, Vector3 direction)
+    {
         float swingSpeed = 500.0f;
         float currentAngle = -45.0f;
 
@@ -172,14 +191,58 @@ public class AttackPlayer : MonoBehaviour
 
         sword.transform.RotateAround(transform.position, rotationAxis, currentAngle);
 
-        while (currentAngle < 45.0f){
+        while (currentAngle < 45.0f)
+        {
             float stepAngle = swingSpeed * Time.deltaTime;
-            float angleToRotate = Mathf.Min(stepAngle, 45.0f - currentAngle); 
+            float angleToRotate = Mathf.Min(stepAngle, 45.0f - currentAngle);
             sword.transform.RotateAround(transform.position, rotationAxis, angleToRotate);
 
             currentAngle += angleToRotate;
             yield return null;
         }
         Destroy(sword);
+    }
+
+    //ATTAQUE DU LANCER DE PARALYSIE//
+    public void ThrowParalysed()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            GameObject Paralysed = Instantiate(weaponPrefabs[currentAttackIndex], transform.position, Quaternion.identity);
+            Vector3 direction = (hit.point - transform.position).normalized;
+            StartCoroutine(MoveParalysed(Paralysed, direction));
+        }
+    }
+    private IEnumerator MoveParalysed(GameObject Paralysed, Vector3 direction)
+    {
+        Paralysed ParalysedScript = Paralysed.GetComponent<Paralysed>();
+        float speed = ParalysedScript != null ? ParalysedScript.speed : 5f;
+        float fixedY = Paralysed.transform.position.y;
+
+        while (Paralysed != null)
+        {
+            Vector3 newPosition = Paralysed.transform.position + direction * speed * Time.deltaTime;
+            newPosition.y = fixedY; // Fixer la position Y
+            Paralysed.transform.position = newPosition;
+            yield return null;
+        }
+    }
+
+    //ATTAQUE DEPOT DE LA TOURELLE//
+    public void DropTourelle()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 SpawnPosition = new Vector3(hit.point.x, 0.2f, hit.point.z);
+            GameObject Tourelle = Instantiate(weaponPrefabs[currentAttackIndex], SpawnPosition, Quaternion.identity);
+        }
     }
 }
