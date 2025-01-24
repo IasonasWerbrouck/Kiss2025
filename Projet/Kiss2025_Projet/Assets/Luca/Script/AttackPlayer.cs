@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class AttackPlayer : MonoBehaviour
 {
@@ -44,7 +46,6 @@ public class AttackPlayer : MonoBehaviour
             }
         }
     }
-
     void ChangeWeapon(int index)
     {
         if (index >= 0 && index < weaponPrefabs.Length)
@@ -64,6 +65,11 @@ public class AttackPlayer : MonoBehaviour
         {
             ThrowGrenade();
         }
+        if (weaponPrefabs[currentAttackIndex].name == "Sword")
+        {
+            SwordAttack();
+        }
+
 
         // Ajoutez ici la logique pour d'autres armes si nécessaire
     }
@@ -82,7 +88,6 @@ public class AttackPlayer : MonoBehaviour
             StartCoroutine(MoveSardinne(sardinne, direction));
         }
     }
-
     private IEnumerator MoveSardinne(GameObject sardinne, Vector3 direction)
     {
         Sardinnne sardinneScript = sardinne.GetComponent<Sardinnne>();
@@ -112,7 +117,6 @@ public class AttackPlayer : MonoBehaviour
             StartCoroutine(MoveGrenade(grenade, targetPosition));
         }
     }
-
     private IEnumerator MoveGrenade(GameObject grenade, Vector3 targetPosition)
     {
         Grenade grenadeScript = grenade.GetComponent<Grenade>();
@@ -133,8 +137,49 @@ public class AttackPlayer : MonoBehaviour
             yield return null;
         }
 
-        if (grenadeScript != null){
+        if (grenadeScript != null)
+        {
             grenadeScript.Boom();
         }
+    }
+
+    //ATTAQUE DE L'EPEE//
+    public void SwordAttack(){
+        float portee = 5.0f;
+
+        Vector3 mousePosition = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit)){
+            Vector3 targetPosition = hit.point;
+            Vector3 direction = (targetPosition - transform.position).normalized;
+            Vector3 spawnPosition = transform.position + direction * portee; 
+            spawnPosition.y = transform.position.y;
+            GameObject sword = Instantiate(weaponPrefabs[currentAttackIndex], spawnPosition, Quaternion.identity);
+            Sword swordComponent = sword.GetComponent<Sword>();
+            sword.transform.LookAt(new Vector3(targetPosition.x, sword.transform.position.y, targetPosition.z));
+            sword.transform.Rotate(0, 90, 0);
+            StartCoroutine(SwordSwing(sword, direction));
+        }
+    }
+
+    private IEnumerator SwordSwing(GameObject sword, Vector3 direction){
+        float swingSpeed = 500.0f;
+        float currentAngle = -45.0f;
+
+        Vector3 rotationAxis = Vector3.up;
+
+        sword.transform.RotateAround(transform.position, rotationAxis, currentAngle);
+
+        while (currentAngle < 45.0f){
+            float stepAngle = swingSpeed * Time.deltaTime;
+            float angleToRotate = Mathf.Min(stepAngle, 45.0f - currentAngle); 
+            sword.transform.RotateAround(transform.position, rotationAxis, angleToRotate);
+
+            currentAngle += angleToRotate;
+            yield return null;
+        }
+        Destroy(sword);
     }
 }
