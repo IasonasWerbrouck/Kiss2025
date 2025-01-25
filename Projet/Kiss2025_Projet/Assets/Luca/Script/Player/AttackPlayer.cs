@@ -224,8 +224,6 @@ public class AttackPlayer : MonoBehaviour{
         {
             Vector3 SpawnPosition = new Vector3(hit.point.x, 0.2f, hit.point.z);
             GameObject Tourelle = Instantiate(weaponPrefabs[currentAttackIndex], SpawnPosition, Quaternion.identity);
-            Tourelle.transform.LookAt(hit.point); // Ajuster l'orientation
-            Tourelle.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
         }
     }
 }
