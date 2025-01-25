@@ -8,7 +8,13 @@ public class HUD_Player : MonoBehaviour
 {
     public Image[] weaponImages;
     public TextMeshProUGUI munitionText; // Correction de l'orthographe et du type
+    public Slider lifeSlider; // Ajout de la référence au slider
+    public Color highLifeColor = Color.green; // Couleur pour > 60%
+    public Color mediumLifeColor = Color.yellow; // Couleur pour 30% - 60%
+    public Color lowLifeColor = Color.red; // Couleur pour < 30%
+
     private int currentWeaponIndex = 0;
+    private LifeGestion playerLifeGestion; // Référence au script LifeGestion
 
     void Start()
     {
@@ -19,6 +25,53 @@ public class HUD_Player : MonoBehaviour
         }
         // Activer l'image de l'arme initiale
         UpdateWeapon(currentWeaponIndex);
+
+        // Récupérer le script LifeGestion du joueur
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerLifeGestion = player.GetComponent<LifeGestion>();
+            if (playerLifeGestion != null)
+            {
+                // Initialiser le slider avec la valeur de vie actuelle et maximale
+                lifeSlider.maxValue = playerLifeGestion.LifeMax;
+                lifeSlider.value = playerLifeGestion.LifeCurrent;
+                UpdateLifeSliderColor();
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (playerLifeGestion != null)
+        {
+            // Mettre à jour la valeur et la valeur maximale du slider en fonction de la vie du joueur
+            lifeSlider.maxValue = playerLifeGestion.LifeMax;
+            lifeSlider.value = playerLifeGestion.LifeCurrent;
+            UpdateLifeSliderColor();
+        }
+    }
+
+    private void UpdateLifeSliderColor()
+    {
+        float lifePercentage = playerLifeGestion.LifeCurrent / playerLifeGestion.LifeMax;
+
+        if (lifePercentage > 0.6f)
+        {
+            lifeSlider.fillRect.GetComponent<Image>().color = highLifeColor;
+        }
+        else if (lifePercentage > 0.3f)
+        {
+            lifeSlider.fillRect.GetComponent<Image>().color = mediumLifeColor;
+        }
+        else if (lifePercentage > 0.0f)
+        {
+            lifeSlider.fillRect.GetComponent<Image>().color = lowLifeColor;
+        }
+        else
+        {
+            lifeSlider.gameObject.SetActive(false);
+        }
     }
 
     public void UpdateWeapon(int weaponIndex)
