@@ -15,8 +15,6 @@ public class AttackPlayer : MonoBehaviour{
         moveScript = GetComponent<Move>();
         hudPlayer = FindObjectOfType<HUD_Player>();
         munitionPlayer = GetComponent<MunitionPlayer>();
-        ChangeWeapon(0);
-        UpdateMunitionHUD();
     }
 
     void Update(){
