@@ -2226,7 +2226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8eb58f6f12b9147b178c53b5a58729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesToEliminatePerWave: 010000000400000004000000
+  enemiesToEliminatePerWave: 010000000400000004000000040000000400000004000000
   enemyPrefab: {fileID: 3283881182842485887, guid: 921fa171ec1a62744aa72725242c1cd4, type: 3}
   spawnPoints:
   - {fileID: 630409120}
