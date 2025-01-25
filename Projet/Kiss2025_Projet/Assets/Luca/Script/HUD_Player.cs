@@ -14,7 +14,10 @@ public class HUD_Player : MonoBehaviour
     public Color lowLifeColor = Color.red;
 
     private int currentWeaponIndex = 0;
-    private LifeGestion playerLifeGestion; 
+    private LifeGestion playerLifeGestion;
+
+    public Image CineImage;
+    public Sprite[] CineImages;
 
     void Start(){
         foreach (Image img in weaponImages){
@@ -29,6 +32,9 @@ public class HUD_Player : MonoBehaviour
                 lifeSlider.value = playerLifeGestion.LifeCurrent;
                 UpdateLifeSliderColor();
             }
+        }
+        if (CineImage != null){
+            CineImage.enabled = false;
         }
     }
 
@@ -100,5 +106,24 @@ public class HUD_Player : MonoBehaviour
             Nb_ennemieRestant.text = "Ennemis restants: " + enemiesRemaining.ToString();
         }
     }
+    public void ShowCineImageForWave(int currentWave, float displayDuration)
+    {
+        if (currentWave >= 0 && currentWave < CineImages.Length)
+        {
+            StartCoroutine(DisplayCineImage(currentWave, displayDuration));
+        }
+    }
+
+    private IEnumerator DisplayCineImage(int waveIndex, float duration)
+    {
+        if (CineImage != null)
+        {
+            CineImage.sprite = CineImages[waveIndex];
+            CineImage.enabled = true;
+            yield return new WaitForSeconds(duration);
+            CineImage.enabled = false;
+        }
+    }
+
 }
 
