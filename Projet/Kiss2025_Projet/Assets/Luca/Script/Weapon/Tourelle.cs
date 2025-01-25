@@ -8,8 +8,13 @@ public class Tourelle : MonoBehaviour
     [SerializeField] private GameObject weaponPrefab;
     [SerializeField] private float fireRate = 1f; // Intervalle de tir en secondes
     [SerializeField] private float detectionRadius = 10f; // Rayon de détection des ennemis
+    [SerializeField] private AudioClip fireSound; // Assignez le fichier audio du tir dans l'inspecteur
+
+    private AudioSource audioSource;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         Destroy(gameObject, timeLife);
         StartCoroutine(FireRoutine());
     }
@@ -33,6 +38,7 @@ public class Tourelle : MonoBehaviour
                 Vector3 direction = (hitCollider.transform.position - transform.position).normalized;
                 GameObject sardinne = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
                 StartCoroutine(MoveSardinne(sardinne, direction));
+                PlayFireSound();
                 break; // Attaque un ennemi à la fois
             }
         }
@@ -50,6 +56,14 @@ public class Tourelle : MonoBehaviour
             newPosition.y = fixedY; // Fixer la position Y
             sardinne.transform.position = newPosition;
             yield return null;
+        }
+    }
+
+    private void PlayFireSound()
+    {
+        if (fireSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(fireSound);
         }
     }
 
