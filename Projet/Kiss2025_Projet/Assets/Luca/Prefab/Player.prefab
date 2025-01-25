@@ -126,7 +126,7 @@ MonoBehaviour:
   LifeCurrent: 30
   LifeMax: 30
   isPlayer: 1
-  damageSound: {fileID: 8300000, guid: 3ff8b1e998520234d874dc205dedd2ca, type: 3}
+  damageSound: {fileID: 8300000, guid: e5cdd89237d677449bb51122fcee3836, type: 3}
   healSound: {fileID: 0}
 --- !u!114 &1057655509858289950
 MonoBehaviour:
@@ -160,6 +160,11 @@ MonoBehaviour:
   - {fileID: 3658287270750452076, guid: c339a4b2699f92f4db5d0cf71f2b2c95, type: 3}
   - {fileID: 5839573873877232937, guid: e3edf9bfe1ebbdc4e869dc7cf4759a25, type: 3}
   animator: {fileID: 186682024371344353}
+  swordAttackSound: {fileID: 0}
+  grenadeAttackSound: {fileID: 0}
+  sardinneAttackSound: {fileID: 0}
+  paralysedAttackSound: {fileID: 0}
+  tourelleAttackSound: {fileID: 0}
 --- !u!114 &4852381693310595197
 MonoBehaviour:
   m_ObjectHideFlags: 0

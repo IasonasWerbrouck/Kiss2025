@@ -178,6 +178,8 @@ MonoBehaviour:
   LifeCurrent: 20
   LifeMax: 20
   isPlayer: 0
+  damageSound: {fileID: 8300000, guid: 47606d7ba30aab34381303dc8d1646c9, type: 3}
+  healSound: {fileID: 0}
 --- !u!114 &-57502557770113025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351ee3a48a1183e4ab024837ba8bfef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyAnimator: {fileID: 0}
+  collider: {fileID: 0}
   weaponTransform: {fileID: 0}
   animator: {fileID: 0}
   agent: {fileID: 0}
