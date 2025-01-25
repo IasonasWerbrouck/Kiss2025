@@ -139,7 +139,7 @@ public class AttackPlayer : MonoBehaviour{
 
     //ATTAQUE DE L'EPEE//
     public void SwordAttack(){
-        float portee = 5.0f;
+        float portee = 3.0f;
 
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
