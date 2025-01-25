@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,11 +14,15 @@ public class Paralysed : MonoBehaviour
         Destroy(gameObject, TimeLife);
     }
 
+    
+
     void OnTriggerEnter(Collider other)
     {
+        EnemyStateManager enemyStateManager = other.GetComponent<EnemyStateManager>();
+        
         if (other.CompareTag("Ennemy"))
         {
-            print("Paralysed");
+            enemyStateManager.Stunned = true;
         }
     }
 }

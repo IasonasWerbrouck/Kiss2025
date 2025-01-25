@@ -49,7 +49,7 @@ public class EnemyStateManager : MonoBehaviour
         }
         else
         {
-         currentState.UpdateState(this,playerTrasform.position, transform.position);
+            currentState.UpdateState(this,playerTrasform.position, transform.position);
          
             
         }
