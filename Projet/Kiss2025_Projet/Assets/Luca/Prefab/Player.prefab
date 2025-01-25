@@ -161,10 +161,10 @@ MonoBehaviour:
   - {fileID: 5839573873877232937, guid: e3edf9bfe1ebbdc4e869dc7cf4759a25, type: 3}
   animator: {fileID: 186682024371344353}
   swordAttackSound: {fileID: 8300000, guid: 161af83a58c7d55409492f068989069e, type: 3}
-  grenadeAttackSound: {fileID: 8300000, guid: b66f5cc715b167c489da693bbd071597, type: 3}
+  grenadeAttackSound: {fileID: 0}
   sardinneAttackSound: {fileID: 8300000, guid: b66f5cc715b167c489da693bbd071597, type: 3}
   paralysedAttackSound: {fileID: 8300000, guid: b66f5cc715b167c489da693bbd071597, type: 3}
-  tourelleAttackSound: {fileID: 8300000, guid: b66f5cc715b167c489da693bbd071597, type: 3}
+  tourelleAttackSound: {fileID: 8300000, guid: 18f299d0ffc4a494d82213840430976d, type: 3}
 --- !u!114 &4852381693310595197
 MonoBehaviour:
   m_ObjectHideFlags: 0
