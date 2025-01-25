@@ -912,7 +912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &809756925
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1747,13 +1747,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8eb58f6f12b9147b178c53b5a58729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesToEliminatePerWave: 0100000004000000
+  enemiesToEliminatePerWave: 010000000400000004000000
   enemyPrefab: {fileID: 3283881182842485887, guid: 921fa171ec1a62744aa72725242c1cd4, type: 3}
   spawnPoints:
   - {fileID: 630409120}
   - {fileID: 1315442262}
   - {fileID: 1810771115}
   - {fileID: 1023966501}
+  cineImageDisplayDuration: 3
 --- !u!4 &1414687519
 Transform:
   m_ObjectHideFlags: 0

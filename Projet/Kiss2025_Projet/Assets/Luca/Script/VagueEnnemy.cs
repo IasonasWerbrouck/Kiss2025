@@ -6,6 +6,7 @@ public class VagueEnnemy : MonoBehaviour
     [SerializeField] private int[] enemiesToEliminatePerWave;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform[] spawnPoints; // Changer en tableau de Transform
+    [SerializeField] private float cineImageDisplayDuration = 3.0f; // Durée d'affichage de l'image
 
     private int enemiesRemaining, waveIndex;
     private HUD_Player hudPlayer;
@@ -14,7 +15,7 @@ public class VagueEnnemy : MonoBehaviour
     {
         waveIndex = 0;
         hudPlayer = FindObjectOfType<HUD_Player>();
-        SpawnEnemiesForWave(waveIndex);
+        StartWave(waveIndex);
     }
 
     public int GetEnemiesToEliminateForWave(int waveIndex_p)
@@ -26,12 +27,25 @@ public class VagueEnnemy : MonoBehaviour
         return enemiesToEliminatePerWave[waveIndex_p];
     }
 
-    private void SpawnEnemiesForWave(int waveIndex_p)
+    private void StartWave(int waveIndex_p)
     {
-        enemiesRemaining = GetEnemiesToEliminateForWave(waveIndex_p);
         if (hudPlayer != null)
         {
-            hudPlayer.UpdateWaveText(waveIndex_p + 1);
+            hudPlayer.ShowCineImageForWave(waveIndex_p, cineImageDisplayDuration);
+            Invoke(nameof(SpawnEnemiesForWave), cineImageDisplayDuration);
+        }
+        else
+        {
+            SpawnEnemiesForWave();
+        }
+    }
+
+    private void SpawnEnemiesForWave()
+    {
+        enemiesRemaining = GetEnemiesToEliminateForWave(waveIndex);
+        if (hudPlayer != null)
+        {
+            hudPlayer.UpdateWaveText(waveIndex + 1);
             hudPlayer.UpdateEnemiesRemainingText(enemiesRemaining);
         }
         if (enemiesRemaining > 0)
@@ -66,7 +80,7 @@ public class VagueEnnemy : MonoBehaviour
         waveIndex++;
         if (waveIndex < enemiesToEliminatePerWave.Length)
         {
-            SpawnEnemiesForWave(waveIndex);
+            StartWave(waveIndex);
         }
         else
         {
