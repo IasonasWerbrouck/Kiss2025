@@ -1182,7 +1182,7 @@ MonoBehaviour:
   lowLifeColor: {r: 1, g: 0, b: 0, a: 1}
   CineImage: {fileID: 181558191}
   CineImages:
-  - {fileID: 21300000, guid: 08444af992a363845a49f4bac3821f98, type: 3}
+  - {fileID: 21300000, guid: edd0c301f36ab084f8d4066ff11d277e, type: 3}
   - {fileID: 21300000, guid: 4a55d2b04a4579547a61edf39d6ffd07, type: 3}
   - {fileID: 21300000, guid: 374c34f001c049040aff8715b9eca004, type: 3}
 --- !u!224 &945419543

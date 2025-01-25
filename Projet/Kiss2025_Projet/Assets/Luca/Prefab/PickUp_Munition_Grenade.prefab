@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8194414915888814965}
   - component: {fileID: 1417250340384680950}
   m_Layer: 0
-  m_Name: PickUp_Munition
+  m_Name: PickUp_Munition_Grenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   munitionAmount: 10
-  weaponIndex: 0
+  weaponIndex: 2
 --- !u!1 &5342179522715118970
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a04e8bbcf9cdc884cb9ec380d81af126, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
