@@ -9,6 +9,7 @@ public class EnemyStunState : EnemyBaseState
     public float timer = 3f;
     public override void EnterState(EnemyStateManager enemyState, Transform playerTransformv, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform, Animator enemyAnimator)
     {
+        enemyAnimator.Play("StunPirate");
         agent = navMeshAgent;
         agent.isStopped = true;
         enemyAnimator.Play("StunPirate");
