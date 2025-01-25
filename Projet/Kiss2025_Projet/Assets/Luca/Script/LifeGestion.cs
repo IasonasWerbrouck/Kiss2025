@@ -34,6 +34,11 @@ public class LifeGestion : MonoBehaviour
             {
                 SceneManager.LoadScene("S_GameOver");
             }
+            else if (gameObject.tag == "Ennemy")
+            {
+                VagueEnnemy vagueEnnemy = GameObject.Find("GameManager").GetComponent<VagueEnnemy>();
+                vagueEnnemy.DecrementEnemiesRemaining();
+            }
         }
     }
 

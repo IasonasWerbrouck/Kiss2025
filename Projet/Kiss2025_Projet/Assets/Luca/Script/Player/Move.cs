@@ -41,10 +41,6 @@ public class Move : MonoBehaviour{
             navMeshAgent.SetDestination(transform.position + Vector3.right);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            animator.Play("A_pecher");
-        }
     }
 
     public Vector3 GetMovementDirection(){

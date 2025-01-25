@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class HUD_Player : MonoBehaviour
 {
     public Image[] weaponImages;
-    public TextMeshProUGUI munitionText; // Correction de l'orthographe et du type
+    public TextMeshProUGUI munitionText, Nb_vague, Nb_ennemieRestant;
     public Slider lifeSlider; // Ajout de la référence au slider
     public Color highLifeColor = Color.green; // Couleur pour > 60%
     public Color mediumLifeColor = Color.yellow; // Couleur pour 30% - 60%
@@ -121,6 +121,23 @@ public class HUD_Player : MonoBehaviour
     public int GetCurrentWeaponIndex()
     {
         return currentWeaponIndex;
+    }
+    // Méthode pour mettre à jour le texte du nombre de vagues
+    public void UpdateWaveText(int currentWave)
+    {
+        if (Nb_vague != null)
+        {
+            Nb_vague.text = "Vague: " + currentWave.ToString();
+        }
+    }
+
+    // Méthode pour mettre à jour le texte du nombre d'ennemis restants
+    public void UpdateEnemiesRemainingText(int enemiesRemaining)
+    {
+        if (Nb_ennemieRestant != null)
+        {
+            Nb_ennemieRestant.text = "Ennemis restants: " + enemiesRemaining.ToString();
+        }
     }
 }
 
