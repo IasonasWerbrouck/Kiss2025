@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class LifeGestion : MonoBehaviour
 {
-
     [SerializeField] public float LifeCurrent = 20.0f;
     [SerializeField] public float LifeMax = 20.0f; // Ajout de la vie maximale
+    [SerializeField] private bool isPlayer = false; // Ajout d'une variable pour vérifier si c'est le joueur
 
     // Update is called once per frame
     void Update()
@@ -30,7 +30,10 @@ public class LifeGestion : MonoBehaviour
         if (LifeCurrent <= 0)
         {
             Destroy(gameObject);
-            SceneManager.LoadScene("S_GameOver");
+            if (isPlayer)
+            {
+                SceneManager.LoadScene("S_GameOver");
+            }
         }
     }
 

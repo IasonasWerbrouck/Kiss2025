@@ -6,9 +6,11 @@ using UnityEngine.AI;
 public class Move : MonoBehaviour{
     private NavMeshAgent navMeshAgent;
     private Vector3 movementDirection;
+    private Animator animator;
 
     void Awake(){
         navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     void Update(){
@@ -37,6 +39,11 @@ public class Move : MonoBehaviour{
         if (Input.GetKey(KeyCode.D)){
             movementDirection = Vector3.right;
             navMeshAgent.SetDestination(transform.position + Vector3.right);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.Play("A_pecher");
         }
     }
 
