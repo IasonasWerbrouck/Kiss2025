@@ -5,7 +5,7 @@ public class EnemyIdleState : EnemyBaseState
 {
 
     
-    public override void EnterState(EnemyStateManager enemyState, Transform playerTransform, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform)
+    public override void EnterState(EnemyStateManager enemyState, Transform playerTransform, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform, Animator enemyAnimator)
     {
         
     }
@@ -29,8 +29,12 @@ public class EnemyIdleState : EnemyBaseState
     }
 
 
-    public override void OnCollision(EnemyStateManager enemyState)
+    public override void OnCollision(EnemyStateManager enemyState, Collider other)
     {
+        if (other.gameObject.CompareTag("Paralized"))
+        {
+           
+        }
     }
 
     public override void ExitState(EnemyStateManager enemyState)

@@ -6,13 +6,14 @@ using UnityEngine.AI;
 public class EnemyMeleeAtackState : EnemyBaseState
 {
     public float meleeCooldown = 1.5f;
-    private Animator enemyAnimator;
-    public override void EnterState(EnemyStateManager enemyState, Transform playerTransform, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform)
+    private Animator enemyAnimatorrr;
+    public override void EnterState(EnemyStateManager enemyState, Transform playerTransform, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform, Animator enemyAnimator)
     {
-        enemyAnimator = animator;
+        enemyAnimatorrr = enemyAnimator;
+        enemyAnimatorrr.Play("AttackPirate");
         
         meleeCooldown = 1.5f;
-        enemyAnimator.SetTrigger("AnimationGo");
+        animator.SetTrigger("AnimationGo");
         RotateWeaponTowardsPlayer(weaponTransform, playerTransform.position);
     }
 
@@ -30,8 +31,10 @@ public class EnemyMeleeAtackState : EnemyBaseState
         }
     }
 
-    public override void OnCollision(EnemyStateManager enemyState)
+    public override void OnCollision(EnemyStateManager enemyState, Collider other)
     {
+        other = null;
+        
     }
 
     public override void ExitState(EnemyStateManager enemyState)
@@ -47,6 +50,6 @@ public class EnemyMeleeAtackState : EnemyBaseState
         
         Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
         
-        weaponTransform.rotation = Quaternion.Slerp(weaponTransform.rotation, lookRotation, 2f);
+        weaponTransform.rotation = Quaternion.Slerp(weaponTransform.rotation, lookRotation, 1f);
     }
 }

@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyStateManager : MonoBehaviour
 {
+    public Animator enemyAnimator;
+    public Collider collider;
     public static float meleeCooldown;
     public Transform weaponTransform;
     public static float detectionAreaIdle = 20;
-    public static float detectionAreaMovement = 5;
+    public static float detectionAreaMovement = 3;
     public Animator animator;
     public NavMeshAgent agent;
     EnemyBaseState currentState;
@@ -29,45 +32,26 @@ public class EnemyStateManager : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         playerTrasform = GameObject.FindGameObjectWithTag("Player").transform;
         
-        currentState = idleState;
+        currentState = movementState;
         
-        currentState.EnterState(this, playerTrasform, agent, animator, weaponTransform);
+        currentState.EnterState(this, playerTrasform, agent, animator, weaponTransform, enemyAnimator);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            Stunned = true;
-        }
-        if (Stunned)
-        {
-            StartCoroutine(StunCouldown());
-            currentState.ExitState(this);
-            
-        }
-        else
-        {
             currentState.UpdateState(this,playerTrasform.position, transform.position);
-         
-            
-        }
     }
-
-    IEnumerator StunCouldown()
-    {
-        
-        currentState = stunState;
-        agent.isStopped = true;
-        yield return new WaitForSeconds(3f);
-        currentState = movementState;
-        agent.isStopped = false;
-        Stunned = false;
-    }
+    
     public void SwitchState(EnemyBaseState state)
     {
         currentState = state;
-        state.EnterState(this, playerTrasform, agent, animator, weaponTransform);
+        state.EnterState(this, playerTrasform, agent, animator, weaponTransform, enemyAnimator);
+    }
+
+    public void OnTriggerEnter(Collider one)
+    {
+        currentState.OnCollision(this, one);
+        
     }
 }

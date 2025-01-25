@@ -9,13 +9,15 @@ public class AttackPlayer : MonoBehaviour{
     private HUD_Player hudPlayer;
     private MunitionPlayer munitionPlayer;
     private int currentAttackIndex = 0;
+    public Animator animator;
+    
 
     void Start(){
         moveScript = GetComponent<Move>();
         hudPlayer = FindObjectOfType<HUD_Player>();
         munitionPlayer = GetComponent<MunitionPlayer>();
     }
-
+    
     void Update(){
         if (Input.GetMouseButtonDown(0)){
             PerformAttack();
@@ -58,18 +60,23 @@ public class AttackPlayer : MonoBehaviour{
             Debug.Log("Attaque de " + weaponPrefabs[currentAttackIndex].name);
             if (weaponPrefabs[currentAttackIndex].name == "Sardinnne"){
                 ThrowSardinne();
+                animator.Play("ThrowPecheur", 0, 0f);
             }
             if (weaponPrefabs[currentAttackIndex].name == "Grenade"){
                 ThrowGrenade();
+                animator.Play("ThrowPecheur", 0, 0f);
             }
             if (weaponPrefabs[currentAttackIndex].name == "Sword"){
                 SwordAttack();
+                animator.Play("SwordPecheur", 0, 0f);
             }
             if (weaponPrefabs[currentAttackIndex].name == "Paralysed"){
                 ThrowParalysed();
+                animator.Play("ThrowPecheur", 0, 0f);
             }
             if (weaponPrefabs[currentAttackIndex].name == "Tourelle"){
                 DropTourelle();
+                animator.Play("SwordPecheur", 0, 0f);
             }
             UpdateMunitionHUD();
         }else{
@@ -89,7 +96,7 @@ public class AttackPlayer : MonoBehaviour{
             GameObject sardinne = Instantiate(weaponPrefabs[currentAttackIndex], transform.position, Quaternion.identity);
             Vector3 direction = (hit.point - transform.position).normalized;
             sardinne.transform.LookAt(hit.point); // Ajuster l'orientation
-            sardinne.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
+            sardinne.transform.Rotate(0, 90, 0); // Rotation supplï¿½mentaire de 90 degrï¿½s
             StartCoroutine(MoveSardinne(sardinne, direction));
         }
     }
@@ -118,7 +125,7 @@ public class AttackPlayer : MonoBehaviour{
             Vector3 targetPosition = new Vector3(hit.point.x, 0.2f, hit.point.z);
             GameObject grenade = Instantiate(weaponPrefabs[currentAttackIndex], transform.position, Quaternion.identity);
             grenade.transform.LookAt(targetPosition); // Ajuster l'orientation
-            grenade.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
+            grenade.transform.Rotate(0, 90, 0); // Rotation supplï¿½mentaire de 90 degrï¿½s
             StartCoroutine(MoveGrenade(grenade, targetPosition));
         }
     }
@@ -197,7 +204,7 @@ public class AttackPlayer : MonoBehaviour{
             GameObject Paralysed = Instantiate(weaponPrefabs[currentAttackIndex], transform.position, Quaternion.identity);
             Vector3 direction = (hit.point - transform.position).normalized;
             Paralysed.transform.LookAt(hit.point); // Ajuster l'orientation
-            Paralysed.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
+            Paralysed.transform.Rotate(0, 90, 0); // Rotation supplï¿½mentaire de 90 degrï¿½s
             StartCoroutine(MoveParalysed(Paralysed, direction));
         }
     }
@@ -225,7 +232,7 @@ public class AttackPlayer : MonoBehaviour{
             Vector3 SpawnPosition = new Vector3(hit.point.x, 0.2f, hit.point.z);
             GameObject Tourelle = Instantiate(weaponPrefabs[currentAttackIndex], SpawnPosition, Quaternion.identity);
             Tourelle.transform.LookAt(hit.point); // Ajuster l'orientation
-            Tourelle.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
+            Tourelle.transform.Rotate(0, 90, 0); // Rotation supplï¿½mentaire de 90 degrï¿½s
         }
     }
 }

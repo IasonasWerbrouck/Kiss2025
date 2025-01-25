@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class EnemyDeathState : EnemyBaseState
 {
     
-    public override void EnterState(EnemyStateManager enemyState, Transform playerTransform, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform)
+    public override void EnterState(EnemyStateManager enemyState, Transform playerTransform, NavMeshAgent navMeshAgent, Animator animator, Transform weaponTransform, Animator enemyAnimator)
     {
     }
 
@@ -15,9 +15,12 @@ public class EnemyDeathState : EnemyBaseState
     {
     }
 
-    public override void OnCollision(EnemyStateManager enemyState)
+    public override void OnCollision(EnemyStateManager enemyState, Collider other)
     {
+
+        other = null;
     }
+    
 
     public override void ExitState(EnemyStateManager enemyState)
     {
