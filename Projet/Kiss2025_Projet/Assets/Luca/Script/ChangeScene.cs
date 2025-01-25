@@ -12,4 +12,8 @@ public class ChangeScene : MonoBehaviour{
             Debug.LogWarning("Scene name is not set.");
         }
     }
+
+    public void OnQuitGame(){
+        Application.Quit();
+    }
 }
