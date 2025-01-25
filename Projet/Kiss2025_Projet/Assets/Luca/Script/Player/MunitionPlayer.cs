@@ -22,6 +22,7 @@ public class MunitionPlayer : MonoBehaviour{
 
     public bool UseMunition(int weaponIndex){
         if (weaponIndex >= 0 && weaponIndex < currentMunitions.Length && currentMunitions[weaponIndex] > 0){
+            print("Munition used");
             currentMunitions[weaponIndex]--;
             if (weaponIndex == hudPlayer?.GetCurrentWeaponIndex()){
                 hudPlayer.UpdateMunitionText(currentMunitions[weaponIndex]);
