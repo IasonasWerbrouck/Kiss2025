@@ -14,8 +14,15 @@ public class PickUp_Munition : MonoBehaviour
             MunitionPlayer munitionPlayer = other.GetComponent<MunitionPlayer>();
             if (munitionPlayer != null)
             {
-                munitionPlayer.ReloadMunition(weaponIndex, munitionAmount);
-                Destroy(gameObject); // Détruire l'objet de munitions après utilisation
+                int currentMunition = munitionPlayer.GetCurrentMunition(weaponIndex);
+                int maxMunition = munitionPlayer.maxMunitions[weaponIndex];
+                int amountToReload = Mathf.Min(munitionAmount, maxMunition - currentMunition);
+
+                if (amountToReload > 0)
+                {
+                    munitionPlayer.ReloadMunition(weaponIndex, amountToReload);
+                    Destroy(gameObject); // Détruire le pickup après utilisation
+                }
             }
         }
     }

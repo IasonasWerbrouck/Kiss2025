@@ -18,12 +18,24 @@ public class MunitionPlayer : MonoBehaviour
         hudPlayer = FindObjectOfType<HUD_Player>();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            int currentWeaponIndex = hudPlayer.GetCurrentWeaponIndex();
+            ReloadMunition(currentWeaponIndex, maxMunitions[currentWeaponIndex]);
+        }
+    }
+
     public bool UseMunition(int weaponIndex)
     {
         if (weaponIndex >= 0 && weaponIndex < currentMunitions.Length && currentMunitions[weaponIndex] > 0)
         {
             currentMunitions[weaponIndex]--;
-            hudPlayer.UpdateMunitionText(currentMunitions[weaponIndex]);
+            if (weaponIndex == hudPlayer.GetCurrentWeaponIndex())
+            {
+                hudPlayer.UpdateMunitionText(currentMunitions[weaponIndex]);
+            }
             return true;
         }
         return false;
@@ -34,7 +46,10 @@ public class MunitionPlayer : MonoBehaviour
         if (weaponIndex >= 0 && weaponIndex < maxMunitions.Length)
         {
             currentMunitions[weaponIndex] = Mathf.Min(currentMunitions[weaponIndex] + amount, maxMunitions[weaponIndex]);
-            hudPlayer.UpdateMunitionText(currentMunitions[weaponIndex]);
+            if (weaponIndex == hudPlayer.GetCurrentWeaponIndex())
+            {
+                hudPlayer.UpdateMunitionText(currentMunitions[weaponIndex]);
+            }
         }
     }
 
@@ -56,3 +71,4 @@ public class MunitionPlayer : MonoBehaviour
         return 0;
     }
 }
+
