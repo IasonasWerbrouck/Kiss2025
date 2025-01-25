@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
+    public AudioClip explosionSound; // Assignez le fichier audio de l'explosion dans l'inspecteur
+    private AudioSource audioSource;
+
     [SerializeField] public float damage, TimeBeforeBOOM, speed = 10f, height = 5f;
     public void Boom(){
         StartCoroutine(ExplodeAfterDelay());
@@ -22,6 +25,14 @@ public class Grenade : MonoBehaviour
             }
         }
         print("BOOM");
+        PlayExplosionSound();
         Destroy(gameObject);
+    }
+    private void PlayExplosionSound()
+    {
+        if (explosionSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(explosionSound);
+        }
     }
 }
