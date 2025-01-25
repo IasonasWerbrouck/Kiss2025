@@ -31,8 +31,7 @@ public class VagueEnnemy : MonoBehaviour
     {
         if (hudPlayer != null)
         {
-            hudPlayer.ShowCineImageForWave(waveIndex_p, cineImageDisplayDuration);
-            Invoke(nameof(SpawnEnemiesForWave), cineImageDisplayDuration);
+            hudPlayer.ShowCineImageForWave(waveIndex_p, cineImageDisplayDuration, SpawnEnemiesForWave);
         }
         else
         {

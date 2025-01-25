@@ -16,67 +16,99 @@ public class HUD_Player : MonoBehaviour
     private int currentWeaponIndex = 0;
     private LifeGestion playerLifeGestion;
 
-    public Image CineImage;
+    public Image CineImage, Livre;
     public Sprite[] CineImages;
+    public float fadeDuration = 1.0f;
 
-    void Start(){
-        foreach (Image img in weaponImages){
+    private System.Action onCineImageEndCallback;
+
+    void Start()
+    {
+        foreach (Image img in weaponImages)
+        {
             img.enabled = false;
         }
         UpdateWeapon(currentWeaponIndex);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null){
+        if (player != null)
+        {
             playerLifeGestion = player.GetComponent<LifeGestion>();
-            if (playerLifeGestion != null){
+            if (playerLifeGestion != null)
+            {
                 lifeSlider.maxValue = playerLifeGestion.LifeMax;
                 lifeSlider.value = playerLifeGestion.LifeCurrent;
                 UpdateLifeSliderColor();
             }
         }
-        if (CineImage != null){
+        if (CineImage != null)
+        {
             CineImage.enabled = false;
+        }
+        if (Livre != null)
+        {
+            Livre.enabled = false;
         }
     }
 
-    void Update(){
-        if (playerLifeGestion != null){
+    void Update()
+    {
+        if (playerLifeGestion != null)
+        {
             lifeSlider.maxValue = playerLifeGestion.LifeMax;
             lifeSlider.value = playerLifeGestion.LifeCurrent;
             UpdateLifeSliderColor();
         }
     }
 
-    private void UpdateLifeSliderColor(){
+    private void UpdateLifeSliderColor()
+    {
         float lifePercentage = playerLifeGestion.LifeCurrent / playerLifeGestion.LifeMax;
 
-        if (lifePercentage > 0.6f){
+        if (lifePercentage > 0.6f)
+        {
             lifeSlider.fillRect.GetComponent<Image>().color = highLifeColor;
-        }else if (lifePercentage > 0.3f){
+        }
+        else if (lifePercentage > 0.3f)
+        {
             lifeSlider.fillRect.GetComponent<Image>().color = mediumLifeColor;
-        }else if (lifePercentage > 0.0f){
+        }
+        else if (lifePercentage > 0.0f)
+        {
             lifeSlider.fillRect.GetComponent<Image>().color = lowLifeColor;
-        }else{
+        }
+        else
+        {
             lifeSlider.gameObject.SetActive(false);
         }
     }
 
-    public void UpdateWeapon(int weaponIndex){
-        if (weaponIndex >= 0 && weaponIndex < weaponImages.Length){
+    public void UpdateWeapon(int weaponIndex)
+    {
+        if (weaponIndex >= 0 && weaponIndex < weaponImages.Length)
+        {
             currentWeaponIndex = weaponIndex;
-            for (int i = 0; i < weaponImages.Length; i++){
+            for (int i = 0; i < weaponImages.Length; i++)
+            {
                 weaponImages[i].enabled = (i == weaponIndex);
             }
         }
     }
 
-    public void UpdateMunitionText(int currentMunition){
-        if (munitionText != null){
-            if (currentMunition < 0){
+    public void UpdateMunitionText(int currentMunition)
+    {
+        if (munitionText != null)
+        {
+            if (currentMunition < 0)
+            {
                 munitionText.gameObject.SetActive(false);
-            }else if (currentMunition == 0){
+            }
+            else if (currentMunition == 0)
+            {
                 munitionText.gameObject.SetActive(false);
                 SetWeaponImageAlpha(currentWeaponIndex, 65);
-            }else{
+            }
+            else
+            {
                 munitionText.gameObject.SetActive(true);
                 munitionText.text = currentMunition.ToString();
                 SetWeaponImageAlpha(currentWeaponIndex, 255);
@@ -84,46 +116,90 @@ public class HUD_Player : MonoBehaviour
         }
     }
 
-    private void SetWeaponImageAlpha(int weaponIndex, byte alpha){
-        if (weaponIndex >= 0 && weaponIndex < weaponImages.Length){
+    private void SetWeaponImageAlpha(int weaponIndex, byte alpha)
+    {
+        if (weaponIndex >= 0 && weaponIndex < weaponImages.Length)
+        {
             Color color = weaponImages[weaponIndex].color;
             color.a = alpha / 255f;
             weaponImages[weaponIndex].color = color;
         }
     }
 
-    public int GetCurrentWeaponIndex(){
+    public int GetCurrentWeaponIndex()
+    {
         return currentWeaponIndex;
     }
-    public void UpdateWaveText(int currentWave){
-        if (Nb_vague != null){
-            Nb_vague.text = "Vague: " + currentWave.ToString();
+    public void UpdateWaveText(int currentWave)
+    {
+        if (Nb_vague != null)
+        {
+            Nb_vague.text = "Vague " + currentWave.ToString();
         }
     }
 
-    public void UpdateEnemiesRemainingText(int enemiesRemaining){
-        if (Nb_ennemieRestant != null){
-            Nb_ennemieRestant.text = "Ennemis restants: " + enemiesRemaining.ToString();
+    public void UpdateEnemiesRemainingText(int enemiesRemaining)
+    {
+        if (Nb_ennemieRestant != null)
+        {
+            Nb_ennemieRestant.text = "  restants: " + enemiesRemaining.ToString();
         }
     }
-    public void ShowCineImageForWave(int currentWave, float displayDuration)
+
+    public void ShowCineImageForWave(int currentWave, float displayDuration, System.Action onCineImageEnd)
     {
         if (currentWave >= 0 && currentWave < CineImages.Length)
         {
+            onCineImageEndCallback = onCineImageEnd;
             StartCoroutine(DisplayCineImage(currentWave, displayDuration));
         }
     }
 
     private IEnumerator DisplayCineImage(int waveIndex, float duration)
     {
+        if (Livre != null)
+        {
+            yield return StartCoroutine(FadeInImage(Livre));
+            yield return new WaitForSeconds(duration);
+            yield return StartCoroutine(FadeOutImage(Livre));
+        }
+
         if (CineImage != null)
         {
             CineImage.sprite = CineImages[waveIndex];
-            CineImage.enabled = true;
+            yield return StartCoroutine(FadeInImage(CineImage));
             yield return new WaitForSeconds(duration);
-            CineImage.enabled = false;
+            yield return StartCoroutine(FadeOutImage(CineImage));
         }
+
+        onCineImageEndCallback?.Invoke();
     }
 
-}
+    private IEnumerator FadeInImage(Image image)
+    {
+        image.enabled = true;
+        Color color = image.color;
+        for (float t = 0.0f; t < fadeDuration; t += Time.deltaTime)
+        {
+            color.a = Mathf.Lerp(0, 1, t / fadeDuration);
+            image.color = color;
+            yield return null;
+        }
+        color.a = 1;
+        image.color = color;
+    }
 
+    private IEnumerator FadeOutImage(Image image)
+    {
+        Color color = image.color;
+        for (float t = 0.0f; t < fadeDuration; t += Time.deltaTime)
+        {
+            color.a = Mathf.Lerp(1, 0, t / fadeDuration);
+            image.color = color;
+            yield return null;
+        }
+        color.a = 0;
+        image.color = color;
+        image.enabled = false;
+    }
+}
