@@ -117,6 +117,8 @@ GameObject:
   - component: {fileID: 5517934159731730224}
   - component: {fileID: 3810969802718233535}
   - component: {fileID: 5557441348216956354}
+  - component: {fileID: -57502557770113025}
+  - component: {fileID: 9089213042656147347}
   m_Layer: 0
   m_Name: EnnemyTest
   m_TagString: Ennemy
@@ -176,3 +178,42 @@ MonoBehaviour:
   LifeCurrent: 20
   LifeMax: 20
   isPlayer: 0
+--- !u!114 &-57502557770113025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3283881182842485887}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 351ee3a48a1183e4ab024837ba8bfef1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponTransform: {fileID: 0}
+  animator: {fileID: 0}
+  agent: {fileID: 0}
+  playerTrasform: {fileID: 0}
+  Stunned: 0
+--- !u!195 &9089213042656147347
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3283881182842485887}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5000001
+  m_Speed: 8
+  m_Acceleration: 41
+  avoidancePriority: 50
+  m_AngularSpeed: 0
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

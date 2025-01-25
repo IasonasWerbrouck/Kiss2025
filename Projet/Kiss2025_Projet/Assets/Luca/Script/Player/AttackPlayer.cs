@@ -78,14 +78,18 @@ public class AttackPlayer : MonoBehaviour{
     }
 
     //ATTAQUE DU LANCER DE POISSON, Dague//
-    public void ThrowSardinne(){
+    public void ThrowSardinne()
+    {
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit)){
+        if (Physics.Raycast(ray, out hit))
+        {
             GameObject sardinne = Instantiate(weaponPrefabs[currentAttackIndex], transform.position, Quaternion.identity);
             Vector3 direction = (hit.point - transform.position).normalized;
+            sardinne.transform.LookAt(hit.point); // Ajuster l'orientation
+            sardinne.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
             StartCoroutine(MoveSardinne(sardinne, direction));
         }
     }
@@ -103,14 +107,18 @@ public class AttackPlayer : MonoBehaviour{
     }
 
     //ATTAQUE DU LANCER DE GRENADE//
-    public void ThrowGrenade(){
+    public void ThrowGrenade()
+    {
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit)){
+        if (Physics.Raycast(ray, out hit))
+        {
             Vector3 targetPosition = new Vector3(hit.point.x, 0.2f, hit.point.z);
             GameObject grenade = Instantiate(weaponPrefabs[currentAttackIndex], transform.position, Quaternion.identity);
+            grenade.transform.LookAt(targetPosition); // Ajuster l'orientation
+            grenade.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
             StartCoroutine(MoveGrenade(grenade, targetPosition));
         }
     }
@@ -139,7 +147,7 @@ public class AttackPlayer : MonoBehaviour{
 
     //ATTAQUE DE L'EPEE//
     public void SwordAttack(){
-        float portee = 5.0f;
+        float portee = 3.0f;
 
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
@@ -178,14 +186,18 @@ public class AttackPlayer : MonoBehaviour{
     }
 
     //ATTAQUE DU LANCER DE PARALYSIE//
-    public void ThrowParalysed(){
+    public void ThrowParalysed()
+    {
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit)){
+        if (Physics.Raycast(ray, out hit))
+        {
             GameObject Paralysed = Instantiate(weaponPrefabs[currentAttackIndex], transform.position, Quaternion.identity);
             Vector3 direction = (hit.point - transform.position).normalized;
+            Paralysed.transform.LookAt(hit.point); // Ajuster l'orientation
+            Paralysed.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
             StartCoroutine(MoveParalysed(Paralysed, direction));
         }
     }
@@ -203,13 +215,17 @@ public class AttackPlayer : MonoBehaviour{
     }
 
     //ATTAQUE DEPOT DE LA TOURELLE//
-    public void DropTourelle(){
+    public void DropTourelle()
+    {
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit)){
+        if (Physics.Raycast(ray, out hit))
+        {
             Vector3 SpawnPosition = new Vector3(hit.point.x, 0.2f, hit.point.z);
             GameObject Tourelle = Instantiate(weaponPrefabs[currentAttackIndex], SpawnPosition, Quaternion.identity);
+            Tourelle.transform.LookAt(hit.point); // Ajuster l'orientation
+            Tourelle.transform.Rotate(0, 90, 0); // Rotation supplémentaire de 90 degrés
         }
     }
 }
