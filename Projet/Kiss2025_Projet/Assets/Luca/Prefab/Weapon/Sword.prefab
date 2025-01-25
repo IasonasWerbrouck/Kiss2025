@@ -96,9 +96,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 2
-  speed: 1
-  radius: 5
-  timeLife: 0.5
 --- !u!1 &4462697666402878378
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b2b241c299122eb42a40b797a91d81bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PickUp_Munition : MonoBehaviour
 {
     [SerializeField] private int munitionAmount = 10;
-    [SerializeField] private int weaponIndex = 0; // Index de l'arme à recharger
+    [SerializeField] private int weaponIndex = 0;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,7 +21,7 @@ public class PickUp_Munition : MonoBehaviour
                 if (amountToReload > 0)
                 {
                     munitionPlayer.ReloadMunition(weaponIndex, amountToReload);
-                    Destroy(gameObject); // Détruire le pickup après utilisation
+                    Destroy(gameObject);
                 }
             }
         }
