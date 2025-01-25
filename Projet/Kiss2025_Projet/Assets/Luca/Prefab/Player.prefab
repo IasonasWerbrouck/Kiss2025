@@ -160,7 +160,7 @@ MonoBehaviour:
   - {fileID: 3658287270750452076, guid: c339a4b2699f92f4db5d0cf71f2b2c95, type: 3}
   - {fileID: 5839573873877232937, guid: e3edf9bfe1ebbdc4e869dc7cf4759a25, type: 3}
   animator: {fileID: 186682024371344353}
-  swordAttackSound: {fileID: 0}
+  swordAttackSound: {fileID: 8300000, guid: 161af83a58c7d55409492f068989069e, type: 3}
   grenadeAttackSound: {fileID: 0}
   sardinneAttackSound: {fileID: 0}
   paralysedAttackSound: {fileID: 0}
