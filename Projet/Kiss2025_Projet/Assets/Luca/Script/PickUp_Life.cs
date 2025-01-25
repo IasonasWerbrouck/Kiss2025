@@ -10,7 +10,7 @@ public class PickUp_Life : MonoBehaviour{
             LifeGestion lifeGestion = other.GetComponent<LifeGestion>();
             if (lifeGestion != null){
                 lifeGestion.TakeHealth(healthAmount);
-                Destroy(gameObject); // Détruire l'objet de soin après utilisation
+                Destroy(gameObject);
             }
         }
     }
