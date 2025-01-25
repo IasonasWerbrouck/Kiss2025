@@ -43,13 +43,10 @@ public class EnemyMeleeAtackState : EnemyBaseState
     }
     private void RotateWeaponTowardsPlayer(Transform weaponTransform, Vector3 playerPosition)
     {
-        // Calculate the direction from the weapon to the player
         Vector3 directionToPlayer = (playerPosition - weaponTransform.position).normalized;
-
-        // Calculate the rotation needed to look at the player
+        
         Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
-
-        // Apply the rotation to the weapon
-        weaponTransform.rotation = Quaternion.Slerp(weaponTransform.rotation, lookRotation, Time.deltaTime * 10f);
+        
+        weaponTransform.rotation = Quaternion.Slerp(weaponTransform.rotation, lookRotation, 2f);
     }
 }
