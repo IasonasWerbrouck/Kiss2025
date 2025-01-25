@@ -3,39 +3,60 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
-public class AttackPlayer : MonoBehaviour{
+
+public class AttackPlayer : MonoBehaviour
+{
     public GameObject[] weaponPrefabs;
     private Move moveScript;
     private HUD_Player hudPlayer;
     private MunitionPlayer munitionPlayer;
     private int currentAttackIndex = 0;
     public Animator animator;
-    
+    [SerializeField] private AudioClip swordAttackSound;
+    [SerializeField] private AudioClip grenadeAttackSound;
+    [SerializeField] private AudioClip sardinneAttackSound;
+    [SerializeField] private AudioClip paralysedAttackSound;
+    [SerializeField] private AudioClip tourelleAttackSound;
+    private AudioSource audioSource;
 
-    void Start(){
+    void Start()
+    {
         moveScript = GetComponent<Move>();
         hudPlayer = FindObjectOfType<HUD_Player>();
         munitionPlayer = GetComponent<MunitionPlayer>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource component is missing.");
+        }
     }
-    
-    void Update(){
-        if (Input.GetMouseButtonDown(0)){
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
             PerformAttack();
         }
         SwitchWeapon();
     }
 
-    void SwitchWeapon(){
+    void SwitchWeapon()
+    {
         if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeWeapon(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeWeapon(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeWeapon(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) ChangeWeapon(3);
         if (Input.GetKeyDown(KeyCode.Alpha5)) ChangeWeapon(4);
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");if (scroll != 0){
-            if (scroll > 0){
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll != 0)
+        {
+            if (scroll > 0)
+            {
                 currentAttackIndex = (currentAttackIndex + 1) % weaponPrefabs.Length;
-            }else{
+            }
+            else
+            {
                 currentAttackIndex = (currentAttackIndex - 1 + weaponPrefabs.Length) % weaponPrefabs.Length;
             }
             hudPlayer.UpdateWeapon(currentAttackIndex);
@@ -43,44 +64,70 @@ public class AttackPlayer : MonoBehaviour{
         }
     }
 
-    void ChangeWeapon(int index){
-        if (index >= 0 && index < weaponPrefabs.Length){
+    void ChangeWeapon(int index)
+    {
+        if (index >= 0 && index < weaponPrefabs.Length)
+        {
             currentAttackIndex = index;
             hudPlayer.UpdateWeapon(currentAttackIndex);
             UpdateMunitionHUD();
         }
     }
-    void UpdateMunitionHUD(){
+
+    void UpdateMunitionHUD()
+    {
         int currentMunition = munitionPlayer.GetCurrentMunition(currentAttackIndex);
         hudPlayer.UpdateMunitionText(currentMunition);
     }
 
-    void PerformAttack(){
-        if (weaponPrefabs[currentAttackIndex].name == "Sword" || munitionPlayer.UseMunition(currentAttackIndex)){
+    void PerformAttack()
+    {
+        if (weaponPrefabs[currentAttackIndex].name == "Sword" || munitionPlayer.UseMunition(currentAttackIndex))
+        {
             Debug.Log("Attaque de " + weaponPrefabs[currentAttackIndex].name);
-            if (weaponPrefabs[currentAttackIndex].name == "Sardinnne"){
+            if (weaponPrefabs[currentAttackIndex].name == "Sardinnne")
+            {
                 ThrowSardinne();
                 animator.Play("ThrowPecheur", 0, 0f);
+                PlaySound(sardinneAttackSound);
             }
-            if (weaponPrefabs[currentAttackIndex].name == "Grenade"){
+            if (weaponPrefabs[currentAttackIndex].name == "Grenade")
+            {
                 ThrowGrenade();
                 animator.Play("ThrowPecheur", 0, 0f);
+                PlaySound(grenadeAttackSound);
             }
-            if (weaponPrefabs[currentAttackIndex].name == "Sword"){
+            if (weaponPrefabs[currentAttackIndex].name == "Sword")
+            {
                 SwordAttack();
                 animator.Play("SwordPecheur", 0, 0f);
+                PlaySound(swordAttackSound);
             }
-            if (weaponPrefabs[currentAttackIndex].name == "Paralysed"){
+            if (weaponPrefabs[currentAttackIndex].name == "Paralysed")
+            {
                 ThrowParalysed();
                 animator.Play("ThrowPecheur", 0, 0f);
+                PlaySound(paralysedAttackSound);
             }
-            if (weaponPrefabs[currentAttackIndex].name == "Tourelle"){
+            if (weaponPrefabs[currentAttackIndex].name == "Tourelle")
+            {
                 DropTourelle();
                 animator.Play("SwordPecheur", 0, 0f);
+                PlaySound(tourelleAttackSound);
             }
             UpdateMunitionHUD();
-        }else{
+        }
+        else
+        {
             Debug.Log("Pas de munitions pour " + weaponPrefabs[currentAttackIndex].name);
+        }
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 
@@ -100,12 +147,15 @@ public class AttackPlayer : MonoBehaviour{
             StartCoroutine(MoveSardinne(sardinne, direction));
         }
     }
-    private IEnumerator MoveSardinne(GameObject sardinne, Vector3 direction){
+
+    private IEnumerator MoveSardinne(GameObject sardinne, Vector3 direction)
+    {
         Sardinnne sardinneScript = sardinne.GetComponent<Sardinnne>();
         float speed = sardinneScript != null ? sardinneScript.speed : 5f;
         float fixedY = sardinne.transform.position.y;
 
-        while (sardinne != null){
+        while (sardinne != null)
+        {
             Vector3 newPosition = sardinne.transform.position + direction * speed * Time.deltaTime;
             newPosition.y = fixedY;
             sardinne.transform.position = newPosition;
@@ -129,7 +179,9 @@ public class AttackPlayer : MonoBehaviour{
             StartCoroutine(MoveGrenade(grenade, targetPosition));
         }
     }
-    private IEnumerator MoveGrenade(GameObject grenade, Vector3 targetPosition){
+
+    private IEnumerator MoveGrenade(GameObject grenade, Vector3 targetPosition)
+    {
         Grenade grenadeScript = grenade.GetComponent<Grenade>();
         float speed = grenadeScript != null ? grenadeScript.speed : 10f;
         float height = grenadeScript != null ? grenadeScript.height : 5f;
@@ -137,7 +189,8 @@ public class AttackPlayer : MonoBehaviour{
         float journeyLength = Vector3.Distance(startPosition, targetPosition);
         float startTime = Time.time;
 
-        while (grenade != null && Vector3.Distance(grenade.transform.position, targetPosition) > 0.1f){
+        while (grenade != null && Vector3.Distance(grenade.transform.position, targetPosition) > 0.1f)
+        {
             float distCovered = (Time.time - startTime) * speed;
             float fractionOfJourney = distCovered / journeyLength;
             Vector3 currentPosition = Vector3.Lerp(startPosition, targetPosition, fractionOfJourney);
@@ -147,20 +200,23 @@ public class AttackPlayer : MonoBehaviour{
             yield return null;
         }
 
-        if (grenadeScript != null){
+        if (grenadeScript != null)
+        {
             grenadeScript.Boom();
         }
     }
 
     //ATTAQUE DE L'EPEE//
-    public void SwordAttack(){
+    public void SwordAttack()
+    {
         float portee = 3.0f;
 
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit)){
+        if (Physics.Raycast(ray, out hit))
+        {
             Vector3 targetPosition = hit.point;
             Vector3 direction = (targetPosition - transform.position).normalized;
             Vector3 spawnPosition = transform.position + direction * portee;
@@ -173,7 +229,8 @@ public class AttackPlayer : MonoBehaviour{
         }
     }
 
-    private IEnumerator SwordSwing(GameObject sword, Vector3 direction){
+    private IEnumerator SwordSwing(GameObject sword, Vector3 direction)
+    {
         float swingSpeed = 500.0f;
         float currentAngle = -45.0f;
 
@@ -181,7 +238,8 @@ public class AttackPlayer : MonoBehaviour{
 
         sword.transform.RotateAround(transform.position, rotationAxis, currentAngle);
 
-        while (currentAngle < 45.0f){
+        while (currentAngle < 45.0f)
+        {
             float stepAngle = swingSpeed * Time.deltaTime;
             float angleToRotate = Mathf.Min(stepAngle, 45.0f - currentAngle);
             sword.transform.RotateAround(transform.position, rotationAxis, angleToRotate);
@@ -208,12 +266,15 @@ public class AttackPlayer : MonoBehaviour{
             StartCoroutine(MoveParalysed(Paralysed, direction));
         }
     }
-    private IEnumerator MoveParalysed(GameObject Paralysed, Vector3 direction){
+
+    private IEnumerator MoveParalysed(GameObject Paralysed, Vector3 direction)
+    {
         Paralysed ParalysedScript = Paralysed.GetComponent<Paralysed>();
         float speed = ParalysedScript != null ? ParalysedScript.speed : 5f;
         float fixedY = Paralysed.transform.position.y;
 
-        while (Paralysed != null){
+        while (Paralysed != null)
+        {
             Vector3 newPosition = Paralysed.transform.position + direction * speed * Time.deltaTime;
             newPosition.y = fixedY;
             Paralysed.transform.position = newPosition;
