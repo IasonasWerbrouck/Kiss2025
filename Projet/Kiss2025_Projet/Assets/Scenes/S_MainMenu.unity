@@ -1148,7 +1148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: S_MainGame
   changeSceneSound: {fileID: 8300000, guid: 320512aa8b558f246a1cbe1e9539ea48, type: 3}
-  quitGameSound: {fileID: 0}
+  quitGameSound: {fileID: 8300000, guid: 8a0e1c2f877423a41a055948be17127a, type: 3}
 --- !u!4 &1277833284
 Transform:
   m_ObjectHideFlags: 0
