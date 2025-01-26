@@ -8,7 +8,13 @@ public class Grenade : MonoBehaviour
     private AudioSource audioSource;
 
     [SerializeField] public float damage, TimeBeforeBOOM, speed = 10f, height = 5f;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     public void Boom(){
+        PlayExplosionSound();
         StartCoroutine(ExplodeAfterDelay());
     }
 
@@ -25,14 +31,11 @@ public class Grenade : MonoBehaviour
             }
         }
         print("BOOM");
-        PlayExplosionSound();
+        
         Destroy(gameObject);
     }
-    private void PlayExplosionSound()
-    {
-        if (explosionSound != null && audioSource != null)
-        {
+    private void PlayExplosionSound(){
             audioSource.PlayOneShot(explosionSound);
-        }
+        
     }
 }
